@@ -13,6 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "gender")
 public class Gender {
+
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -20,5 +21,4 @@ public class Gender {
     @Size(max = 20)
     @Column(name = "gender", length = 20)
     private String gender;
-
 }
