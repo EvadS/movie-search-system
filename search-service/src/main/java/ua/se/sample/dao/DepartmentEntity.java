@@ -1,4 +1,4 @@
-package ua.se.sample.generated;
+package ua.se.sample.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,10 +12,10 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "department")
-public class Department {
+public class DepartmentEntity {
     @Id
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Size(max = 200)
     @Column(name = "department_name", length = 200)

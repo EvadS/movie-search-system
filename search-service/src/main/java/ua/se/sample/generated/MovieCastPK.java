@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ua.se.sample.dao.GenderEntity;
+import ua.se.sample.dao.PersonEntity;
 
 import java.io.Serializable;
 
@@ -21,10 +23,10 @@ public class MovieCastPK implements Serializable {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "person_id", nullable = false)
-    private Person person;
+    private PersonEntity person;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "gender_id", nullable = false)
-    private Gender gender;
+    private GenderEntity gender;
 }

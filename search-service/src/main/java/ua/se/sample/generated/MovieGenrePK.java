@@ -3,6 +3,7 @@ package ua.se.sample.generated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import ua.se.sample.dao.GenreEntity;
 
 public class MovieGenrePK {
     @ManyToOne(fetch = FetchType.LAZY)
@@ -11,5 +12,5 @@ public class MovieGenrePK {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
-    private Genre genre;
+    private GenreEntity genre;
 }

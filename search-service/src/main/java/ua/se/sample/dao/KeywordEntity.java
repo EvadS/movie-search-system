@@ -1,4 +1,4 @@
-package ua.se.sample.generated;
+package ua.se.sample.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,14 +11,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "person")
-public class Person {
+@Table(name = "keyword")
+public class KeywordEntity {
     @Id
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Size(max = 500)
-    @Column(name = "person_name", length = 500)
-    private String personName;
+    @Size(max = 100)
+    @Column(name = "keyword_name", length = 100)
+    private String keywordName;
 
 }

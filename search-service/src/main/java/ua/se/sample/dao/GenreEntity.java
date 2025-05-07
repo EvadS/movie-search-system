@@ -1,4 +1,4 @@
-package ua.se.sample.generated;
+package ua.se.sample.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,14 +11,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "production_company")
-public class ProductionCompany {
+@Table(name = "genre")
+public class GenreEntity {
     @Id
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Size(max = 200)
-    @Column(name = "company_name", length = 200)
-    private String companyName;
+    @Size(max = 100)
+    @Column(name = "genre_name", length = 100)
+    private String genreName;
 
 }

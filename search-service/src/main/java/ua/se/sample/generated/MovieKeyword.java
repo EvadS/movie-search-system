@@ -3,6 +3,7 @@ package ua.se.sample.generated;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ua.se.sample.dao.KeywordEntity;
 
 @Getter
 @Setter
@@ -20,6 +21,6 @@ public class MovieKeyword {
     @MapsId("keywordId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "keyword_id", nullable = false)
-    private Keyword keyword;
+    private KeywordEntity keyword;
 
 }
