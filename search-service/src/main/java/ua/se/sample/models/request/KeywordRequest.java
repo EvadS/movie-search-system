@@ -11,8 +11,7 @@ import lombok.*;
 @Builder
 public class KeywordRequest {
 
-
-    @NotEmpty(message = "{keyword.notempty}")
-    @Size(max = 100)
+    @NotBlank(message = "{keyword.name.size}")
+    @Size(max = 100, message = "{keyword.name.not.blank}")
     private String name;
 }

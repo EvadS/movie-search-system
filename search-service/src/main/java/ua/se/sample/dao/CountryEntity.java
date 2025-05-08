@@ -26,7 +26,7 @@ public class CountryEntity {
     private Long id;
 
     @NotBlank
-    @Size(max = 40)
+    @Size(max = 1000)
     private String text;
 
     @NonNull

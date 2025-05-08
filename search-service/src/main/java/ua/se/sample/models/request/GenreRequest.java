@@ -1,5 +1,6 @@
 package ua.se.sample.models.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -8,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class GenreRequest {
 
-    @Size(max = 100)
+    @NotBlank(message = "{genre.name.not.blank}")
+    @Size(max = 100, message = "{genre.name.size}")
     private String name;
 }

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DepartmentRequest {
 
-    @NotBlank
-    @Size(max = 200)
+    @NotBlank(message = "{department.name.size}")
+    @Size(max = 200, message = "{department.name.not.blank}")
     private String departmentName;
 }

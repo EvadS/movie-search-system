@@ -1,6 +1,5 @@
 package ua.se.sample.models.request;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -14,12 +13,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LanguageRequest {
 
-    @NotBlank(message = "Please provide a language name")
-    @Size(max = 500,message = "No more 100 symbols")
+    @NotBlank(message = "{language.name.not.blank}")
+    @Size(max = 500, message = "{language.name.size}")
     private String name;
 
-    @NotBlank(message = "Please provide a language name")
-    @Size(max =10 ,message = "No more 100 symbols")
+    @NotBlank(message = "{language.code.not.blank}")
+    @Size(max = 10, message = "{language.code.size}")
     private String code;
-
 }

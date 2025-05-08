@@ -12,14 +12,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CountryRequest {
-    @NotBlank
-    @Size(max = 40)
+
+    @NotBlank(message = "{country.text.not.blank}")
+    @Size(max = 1000, message = "{country.text.size}")
     private String text;
 
-    @NotBlank
-    @Size(max = 10)
+    @NotBlank(message = "{country.iso.code.not.blank}")
+    @Size(max = 10, message = "{country.iso.code.size}")
     public String isoCode;
 
-    @Size(max = 100)
+    @NotBlank(message = "{country.name.not.blank}")
+    @Size(max = 100, message = "{country.name.size}")
     public String name;
 }
