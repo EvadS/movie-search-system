@@ -2,8 +2,8 @@ package ua.se.sample.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ua.se.sample.dao.DepartmentEntity;
+import ua.se.sample.dao.LanguageEntity;
 
 @Repository
-public interface LanguageRepository extends JpaRepository<DepartmentEntity, Long> {
+public interface LanguageRepository extends JpaRepository<LanguageEntity, Long> {
 }

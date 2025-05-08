@@ -1,4 +1,5 @@
-package ua.se.sample.models.request;
+package ua.se.sample.models.response;
+
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,9 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DepartmentRequest {
+public class LanguageResponse {
 
-    @NotBlank
-    @Size(max = 200)
-    private String departmentName;
+    private Long id;
+
+    private String name;
+
+    private String code;
 }

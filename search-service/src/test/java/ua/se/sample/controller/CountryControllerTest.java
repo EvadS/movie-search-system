@@ -44,22 +44,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import ua.se.sample.web.ResponseBodyMatchers;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.BDDMockito.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @Log4j2
@@ -92,7 +81,7 @@ class CountryControllerTest {
             List<CountryResponseItem> countryList = prepareCountryResponse();
             given(countryService.getCountryList()).willReturn(countryList);
 
-            String uriTemplate = ControllersApiPaths.BASE_PATH + ControllersApiPaths.GET_ITEMS;
+            String uriTemplate = ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.GET_ITEMS;
             MvcResult result
                     = this.mockMvc
                     .perform(get(uriTemplate))
@@ -122,7 +111,7 @@ class CountryControllerTest {
 
             MvcResult result
                     = this.mockMvc
-                    .perform(get(ControllersApiPaths.BASE_PATH + ControllersApiPaths.GET_ITEM, name))
+                    .perform(get(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.GET_ITEM_BY_NAME, name))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -145,7 +134,7 @@ class CountryControllerTest {
         try {
             this.mockMvc
                     .perform(
-                            post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE)
+                            post(ControllersApiPaths.BASE_PATH+ ControllersApiPaths.COUNTRY_PATH + ControllersApiPaths.CREATE)
                                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                                     .content(objectMapper.writeValueAsString(countryRequest)))
                     .andExpect(status().isCreated())
@@ -170,7 +159,7 @@ class CountryControllerTest {
 
 
         // action
-        ResultActions response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE)
+        ResultActions response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(countryRequest)));
 
@@ -193,7 +182,7 @@ class CountryControllerTest {
 
             this.mockMvc
                     .perform(
-                            put(ControllersApiPaths.BASE_PATH + ControllersApiPaths.UPDATE, defaultId)
+                            put(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.UPDATE, defaultId)
                                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                                     .content(objectMapper.writeValueAsString(countryRequest))
                     )
@@ -212,7 +201,7 @@ class CountryControllerTest {
 
             this.mockMvc
                     .perform(
-                            put(ControllersApiPaths.BASE_PATH + ControllersApiPaths.UPDATE, defaultId)
+                            put(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.UPDATE, defaultId)
                                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                                     .content(objectMapper.writeValueAsString(countryRequest))
                     ).andExpect(status().is(HttpStatus.NOT_FOUND.value()));
@@ -228,7 +217,7 @@ class CountryControllerTest {
             doNothing().when(countryService).deleteCountry(defaultId);
 
             this.mockMvc
-                    .perform(delete(ControllersApiPaths.BASE_PATH + ControllersApiPaths.DELETE, defaultId))
+                    .perform(delete(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.DELETE, defaultId))
                     .andExpect(status().is(HttpStatus.NO_CONTENT.value()));
         } catch (Exception e) {
             Assertions.fail("Error occurred while deleting catalogue item", e);
@@ -240,7 +229,7 @@ class CountryControllerTest {
     void whenValidInput_thenMapsToBusinessModel() throws Exception {
 
         CountryRequest countryRequest = prepareCountryRequest(countryName);
-        mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE)
+        mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(countryRequest)))
                 .andExpect(status().isCreated());
@@ -273,7 +262,7 @@ class CountryControllerTest {
 //            MvcResult result
 //                    = this.mockMvc
 //                    .perform(
-//                            post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE)
+//                            post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
 //                                    .contentType(MediaType.APPLICATION_JSON_VALUE)
 //                                    .content(objectMapper.writeValueAsString(countryRequest))
 //                    )
@@ -291,7 +280,7 @@ class CountryControllerTest {
         countryRequest.setName("");
         countryRequest.setIsoCode("012345678901234567890");
 
-        mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE)
+        mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(countryRequest)))
                 .andExpect(status().isBadRequest())
@@ -307,7 +296,7 @@ class CountryControllerTest {
         CountryRequest countryRequest = prepareCountryRequest(countryName);
         when(countryService.createCountry(any())).thenThrow(new AlreadyExistsException(countryRequest.getName()));
 
-        MockHttpServletResponse response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE)
+        MockHttpServletResponse response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(countryRequest)))
                 .andExpect(status().isConflict()) //409
@@ -324,7 +313,7 @@ class CountryControllerTest {
     void createCountryHandlerNotFound() throws Exception {
         CountryRequest countryRequest = prepareCountryRequest(countryName);
 
-        MockHttpServletResponse response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE + "fake")
+        MockHttpServletResponse response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE + "fake")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(countryRequest)))
                 .andExpect(status().isMethodNotAllowed()) //409
@@ -341,7 +330,7 @@ class CountryControllerTest {
     void createCountryHttpMediaTypeNotSupported() throws Exception {
         CountryRequest countryRequest = prepareCountryRequest(countryName);
 
-        MockHttpServletResponse response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE)
+        MockHttpServletResponse response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
                         .contentType("")
                         .content(objectMapper.writeValueAsString(countryRequest)))
                 .andExpect(status().isUnsupportedMediaType())
@@ -358,7 +347,7 @@ class CountryControllerTest {
         CountryRequest countryRequest = prepareCountryRequest(countryName);
         when(countryService.createCountry(any())).thenThrow(new DataBaseConstraintException("country", "name", countryRequest.getName()));
 
-        MockHttpServletResponse response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.CREATE)
+        MockHttpServletResponse response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(countryRequest)))
                 .andExpect(status().isConflict())

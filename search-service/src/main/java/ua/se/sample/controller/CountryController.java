@@ -17,14 +17,11 @@ import ua.se.sample.service.CountryService;
 import java.util.List;
 
 @RestController
-@RequestMapping(ControllersApiPaths.BASE_PATH)
+@RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH)
 @AllArgsConstructor
 public class CountryController {
 
     private final CountryService countryService;
-
-
-
 
     @GetMapping(ControllersApiPaths.GET_ITEMS)
     @ResponseStatus(value = HttpStatus.OK)
@@ -32,7 +29,7 @@ public class CountryController {
         return countryService.getCountryList();
     }
 
-    @GetMapping(ControllersApiPaths.GET_ITEM)
+    @GetMapping(ControllersApiPaths.GET_ITEM_BY_NAME)
     @ResponseStatus(value = HttpStatus.OK)
     public CountryResponseItem getGetCountryByName(@PathVariable(value = "name") String countryName) {
         return countryService.getCountryByName(countryName);
@@ -50,7 +47,7 @@ public class CountryController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public void updateCountry(
             @PathVariable(value = "id") Long id,
-            @Valid @RequestBody CountryRequest country) throws ResourceNotFoundException {
+            @Valid @RequestBody CountryRequest country)  {
 
         countryService.updateCountry(id, country);
     }
@@ -67,6 +64,6 @@ public class CountryController {
     public void uploadCountryImage(
             @PathVariable(value = "id") String skuNumber,
             @RequestParam("file") MultipartFile file)
-            throws ResourceNotFoundException, FileStorageException {
+            throws ResourceNotFoundException {
     }
 }

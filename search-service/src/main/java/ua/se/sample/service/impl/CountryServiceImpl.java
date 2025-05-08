@@ -63,6 +63,11 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public void deleteCountry(Long id) {
+
+        CountryEntity countryEntity =repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Country", "id", id));
+
+
         repository.deleteById(id);
     }
 }

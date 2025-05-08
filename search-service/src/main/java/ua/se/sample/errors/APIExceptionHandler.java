@@ -29,7 +29,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Log4j2
-@Slf4j
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String TRACE = "trace";

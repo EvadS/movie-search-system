@@ -68,7 +68,7 @@ public class WebLayerTest {
 
         MvcResult result
                 = this.mockMvc
-                .perform(get(ControllersApiPaths.BASE_PATH + ControllersApiPaths.GET_ITEM, COUNTRY_NAME))
+                .perform(get(ControllersApiPaths.BASE_PATH + ControllersApiPaths.GET_ITEM_BY_NAME, COUNTRY_NAME))
                 .andExpect(status().isOk())
                 .andReturn();
     }

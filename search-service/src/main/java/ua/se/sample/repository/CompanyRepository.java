@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ua.se.sample.dao.ProductionCompanyEntity;
 
 @Repository
-public interface ProductCompanyRepository extends JpaRepository<ProductionCompanyEntity, Long> {
+public interface CompanyRepository extends JpaRepository<ProductionCompanyEntity, Long> {
 }
