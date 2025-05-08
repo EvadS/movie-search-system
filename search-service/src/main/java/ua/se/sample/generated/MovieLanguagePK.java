@@ -4,6 +4,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import ua.se.sample.dao.LanguageEntity;
+import ua.se.sample.dao.Movie;
 
 public class MovieLanguagePK {
     @ManyToOne(fetch = FetchType.LAZY)

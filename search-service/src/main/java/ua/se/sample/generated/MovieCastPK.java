@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ua.se.sample.dao.GenderEntity;
+import ua.se.sample.dao.Movie;
 import ua.se.sample.dao.PersonEntity;
 
 import java.io.Serializable;

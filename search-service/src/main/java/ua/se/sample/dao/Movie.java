@@ -1,12 +1,11 @@
-package ua.se.sample.generated;
+package ua.se.sample.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,10 +14,13 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "movie")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class Movie {
     @Id
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Size(max = 1000)
     @Column(name = "title", length = 1000)

@@ -19,6 +19,8 @@ public class ControllersApiPaths {
     public static final String LANGUAGE_PATH = "/language";
     public static final String PERSON_PATH = "/person";
 
+    public static final String MOVIE_PATH = "/movie";
+
 
     public static final String CREATE = "/";
     public static final String GET_ITEMS = "/";
@@ -27,4 +29,9 @@ public class ControllersApiPaths {
     public static final String UPDATE = "/{id}";
     public static final String DELETE = "/{id}";
     public static final String UPLOAD_IMAGE = "/{id}/image";
+
+
+    public static final String PAGED = "/paged";
+
+
 }

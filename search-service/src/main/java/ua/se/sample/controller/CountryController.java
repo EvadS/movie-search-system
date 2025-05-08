@@ -1,13 +1,13 @@
 package ua.se.sample.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.se.sample.config.ControllersApiPaths;
-import ua.se.sample.errors.exceptions.FileStorageException;
 import ua.se.sample.errors.exceptions.ResourceNotFoundException;
 import ua.se.sample.models.request.CountryRequest;
 import ua.se.sample.models.response.CountryResponse;
@@ -37,7 +37,7 @@ public class CountryController {
 
     @PostMapping(ControllersApiPaths.CREATE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<CountryResponse> addCountry(@Valid @RequestBody CountryRequest catalogueItem) {
+    public ResponseEntity<CountryResponse> addCountry(@NotNull @Valid  @RequestBody CountryRequest catalogueItem) {
 
         CountryResponse country = countryService.createCountry(catalogueItem);
         return new ResponseEntity<>(country, HttpStatus.CREATED);

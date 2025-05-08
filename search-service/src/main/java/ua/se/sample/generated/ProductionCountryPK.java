@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ua.se.sample.dao.CountryEntity;
+import ua.se.sample.dao.Movie;
 
 @Getter
 @Setter
