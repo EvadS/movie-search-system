@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.se.sample.dao.CountryEntity;
 import ua.se.sample.dao.Movie;
 import ua.se.sample.dao.ProductionCountry;
@@ -74,11 +75,26 @@ public class MovieServiceImpl implements MovieService {
                 .orElseThrow(() -> new ResourceNotFoundException("movie", "id", id));
     }
 
-    //@Transactional
+    @Transactional
     @Override
     public MovieFullInfoResponse createNewMovie(MovieRequest movieRequest) {
         Movie movie = mapper.toMovieEntity(movieRequest);
         movie = movieRepository.save(movie);
+
+        if(movieRequest.getCountryId() !=null){
+            //countryId
+            CountryEntity countryEntity =countryRepository.findById(movieRequest.getCountryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Country", "id", movieRequest.getCountryId()));
+
+            ProductionCountryPK productionCountryPK = new ProductionCountryPK();
+            productionCountryPK.setMovie(movie);
+            productionCountryPK.setCountry(countryEntity);
+
+            ProductionCountry productionCountry = new ProductionCountry();
+            productionCountry.setProductionCountryPK(productionCountryPK);
+            productionCountryRepository.save(productionCountry);
+        }
+
         return mapper.toMovieFullInfoResponse(movie);
     }
 
