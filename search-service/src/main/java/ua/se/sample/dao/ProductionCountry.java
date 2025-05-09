@@ -1,13 +1,14 @@
-package ua.se.sample.generated;
+package ua.se.sample.dao;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ua.se.sample.dao.CountryEntity;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "production_country")
 public class ProductionCountry {
 

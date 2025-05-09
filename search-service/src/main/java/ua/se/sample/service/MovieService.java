@@ -17,9 +17,6 @@ public interface MovieService {
 
     MovieFullInfoResponse getMovieFullInfo(Long id);
 
-    MovieFullInfoResponse add(MovieRequest request);
-    MovieFullInfoResponse addFull(MovieFullInfoRequest request);
-
     MovieFullInfoResponse createNewMovie(@NotNull @Valid MovieRequest movieRequest);
 
     MovieFullInfoResponse updateMovie(@NotNull Long id, @NotNull @Valid MovieRequest movieRequest);

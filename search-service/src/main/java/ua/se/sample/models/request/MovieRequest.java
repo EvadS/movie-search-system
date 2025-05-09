@@ -34,4 +34,6 @@ public class MovieRequest {
     private String tagline;
     private BigDecimal voteAverage;
     private Integer voteCount;
+
+    private Long countryId;
 }

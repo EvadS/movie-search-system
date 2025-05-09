@@ -8,23 +8,31 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ua.se.sample.dao.CountryEntity;
 import ua.se.sample.dao.Movie;
+import ua.se.sample.dao.ProductionCountry;
+import ua.se.sample.dao.ProductionCountryPK;
 import ua.se.sample.errors.exceptions.ResourceNotFoundException;
 import ua.se.sample.mapper.MovieMapper;
 import ua.se.sample.models.request.MovieFullInfoRequest;
 import ua.se.sample.models.request.MovieRequest;
+import ua.se.sample.models.response.CountryResponse;
 import ua.se.sample.models.response.MovieFullInfoResponse;
 import ua.se.sample.models.response.MoviePagedResponse;
 import ua.se.sample.models.response.MovieResponseItem;
+import ua.se.sample.repository.CountryRepository;
 import ua.se.sample.repository.MovieRepository;
+import ua.se.sample.repository.ProductionCountryRepository;
 import ua.se.sample.service.MovieService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
-    private final MovieRepository repository;
+    private final MovieRepository movieRepository;
+    private final CountryRepository countryRepository;
+    private final ProductionCountryRepository productionCountryRepository;
     private final MovieMapper mapper;
 
     private static MoviePagedResponse toPagedMoviePagedResponse(List<MovieResponseItem> list, Page<Movie> all) {
@@ -42,7 +50,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieResponseItem> getMoviesList(int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "id"));
-        Page<Movie> all = repository.findAll(pageable);
+        Page<Movie> all = movieRepository.findAll(pageable);
 
         return all.getContent().stream()
                 .map(mapper::toMovieResponseItem).toList();
@@ -51,7 +59,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MoviePagedResponse getPagedMovies(int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "id"));
-        Page<Movie> all = repository.findAll(pageable);
+        Page<Movie> all = movieRepository.findAll(pageable);
 
         List<MovieResponseItem> list = all.stream().map(mapper::toMovieResponseItem).toList();
 
@@ -61,35 +69,22 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieFullInfoResponse getMovieFullInfo(Long id) {
-        return repository.findById(id)
+        return movieRepository.findById(id)
                 .map(mapper::toMovieFullInfoResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("movie", "id", id));
-
     }
 
-    @Override
-    public MovieFullInfoResponse add(MovieRequest request) {
-
-        Movie movie = mapper.toMovieEntity(request);
-        return null;
-    }
-
-    @Override
-    public MovieFullInfoResponse addFull(MovieFullInfoRequest request) {
-        Movie movie = mapper.toMovieEntity(request);
-        return null;
-    }
-
+    //@Transactional
     @Override
     public MovieFullInfoResponse createNewMovie(MovieRequest movieRequest) {
         Movie movie = mapper.toMovieEntity(movieRequest);
-        movie = repository.save(movie);
+        movie = movieRepository.save(movie);
         return mapper.toMovieFullInfoResponse(movie);
     }
 
     @Override
     public MovieFullInfoResponse updateMovie(Long id, MovieRequest movieRequest) {
-        Movie movieEntity = repository.findById(id)
+        Movie movieEntity = movieRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
 
         movieEntity.setBudget(movieRequest.getBudget());
@@ -130,9 +125,22 @@ public class MovieServiceImpl implements MovieService {
         if (movieRequest.getVoteCount() != null)
             movieEntity.setVoteCount(movieRequest.getVoteCount());
 
+        if(movieRequest.getCountryId() !=null){
+            //countryId
+            CountryEntity countryEntity =countryRepository.findById(movieRequest.getCountryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Country", "id", movieRequest.getCountryId()));
+
+            ProductionCountryPK productionCountryPK = new ProductionCountryPK();
+            productionCountryPK.setMovie(movieEntity);
+            productionCountryPK.setCountry(countryEntity);
+
+            ProductionCountry productionCountry = new ProductionCountry();
+            productionCountry.setProductionCountryPK(productionCountryPK);
+            productionCountryRepository.save(productionCountry);
+        }
 
 
-        movieEntity = repository.save(movieEntity);
+        movieEntity = movieRepository.save(movieEntity);
         return mapper.toMovieFullInfoResponse(movieEntity);
     }
 }

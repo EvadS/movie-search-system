@@ -1,11 +1,13 @@
-package ua.se.sample.generated;
+package ua.se.sample.dao;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ua.se.sample.dao.CountryEntity;
-import ua.se.sample.dao.Movie;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class ProductionCountryPK {
