@@ -7,6 +7,11 @@ import lombok.*;
 import jakarta.persistence.*;
 
 
+/**
+ * Simple business object representing a country.
+ *
+ * @author Yevheniy Skyba
+ */
 @Getter
 @Setter
 @NoArgsConstructor

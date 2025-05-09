@@ -1,5 +1,12 @@
 package ua.se.sample.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COMPANY_PATH)
 @AllArgsConstructor
+@Tag(name = "Company", description = "Company management APIs")
 public class CompanyController {
 
     private final CompanyService service;
@@ -38,6 +46,8 @@ public class CompanyController {
 
     @PutMapping(ControllersApiPaths.UPDATE)
     @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @Operation(summary = "Update a country",
+            description = "Update an existing country. The response is updated Country object.")
     public CompanyResponse update(
             @PathVariable(value = "id") Long id,
             @Valid @RequestBody CompanyRequest companyRequest)  {
@@ -46,7 +56,16 @@ public class CompanyController {
 
     @DeleteMapping(ControllersApiPaths.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void remove(@PathVariable(value = "id") Long id) {
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Void.class))}),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content)})
+    public void remove(
+            @Parameter(
+                    description = "ID of company to be deleted",
+                    required = true)
+            @PathVariable(value = "id") Long id) {
         service.delete(id);
     }
 }

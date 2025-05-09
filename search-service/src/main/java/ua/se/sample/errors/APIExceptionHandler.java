@@ -1,5 +1,7 @@
 package ua.se.sample.errors;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 
@@ -109,6 +111,8 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AlreadyExistsException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
+    @ApiResponse(responseCode = "404", description = "resource not found", content = @Content)
+
     public ResponseEntity<?> handleAlreadyExistsException(AlreadyExistsException e, WebRequest request) {
         return buildErrorResponse(e, "Resource already exists", e.getMessage(), HttpStatus.CONFLICT, request);
     }

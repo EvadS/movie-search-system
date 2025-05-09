@@ -1,11 +1,9 @@
 package ua.se.sample.errors.apierror;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 
+@Getter
 @EqualsAndHashCode(callSuper = false)
 @Builder(toBuilder = true)
 public class ApiValidationError {
@@ -24,32 +22,16 @@ public class ApiValidationError {
         this.message = message;
     }
 
-    public String getObject() {
-        return object;
-    }
-
     public void setObject(String object) {
         this.object = object;
-    }
-
-    public String getField() {
-        return field;
     }
 
     public void setField(String field) {
         this.field = field;
     }
 
-    public Object getRejectedValue() {
-        return rejectedValue;
-    }
-
     public void setRejectedValue(Object rejectedValue) {
         this.rejectedValue = rejectedValue;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public void setMessage(String message) {

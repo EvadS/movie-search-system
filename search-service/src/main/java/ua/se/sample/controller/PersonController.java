@@ -1,5 +1,6 @@
 package ua.se.sample.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.PERSON_PATH)
 @AllArgsConstructor
+@Tag(name = "Person", description = "Person management APIs")
 public class PersonController {
 
     private final PersonService personService;

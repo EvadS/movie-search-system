@@ -1,5 +1,6 @@
 package ua.se.sample.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.GENRE_PATH)
 @AllArgsConstructor
+@Tag(name = "Genre", description = "Genre management APIs")
 public class GenreController {
 
     private final GenreService genreService;

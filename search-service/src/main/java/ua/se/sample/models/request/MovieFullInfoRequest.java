@@ -1,15 +1,15 @@
 package ua.se.sample.models.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MovieFullInfoRequest {
     private Integer id;
     private String title;

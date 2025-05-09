@@ -20,6 +20,7 @@ import ua.se.sample.service.MovieService;
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.MOVIE_PATH)
 @AllArgsConstructor
+@Tag(name = "Movie", description = "Movie management APIs")
 public class MovieController {
 
     private final MovieService movieService;

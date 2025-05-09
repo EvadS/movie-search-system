@@ -4,9 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class GenreRequest {
 
     @NotBlank(message = "{genre.name.not.blank}")

@@ -1,5 +1,6 @@
 package ua.se.sample.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpRequest;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.KEYWORD_PATH)
 @AllArgsConstructor
+@Tag(name = "Keyword", description = "Keyword management APIs")
 public class KeywordController {
 
     private final KeywordService keywordService;

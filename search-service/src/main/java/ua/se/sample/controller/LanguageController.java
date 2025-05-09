@@ -1,5 +1,6 @@
 package ua.se.sample.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpRequest;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.LANGUAGE_PATH)
 @AllArgsConstructor
+@Tag(name = "Language", description = "Language management APIs")
 public class LanguageController {
 
     private final LanguageService languageService;

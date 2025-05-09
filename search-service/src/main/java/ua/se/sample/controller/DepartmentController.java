@@ -1,5 +1,6 @@
 package ua.se.sample.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.DEPARTMENT_PATH)
 @AllArgsConstructor
+@Tag(name = "Department", description = "Department management APIs")
 public class DepartmentController {
 
     private final DepartmentService service;
