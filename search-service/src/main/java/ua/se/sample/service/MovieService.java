@@ -1,5 +1,7 @@
 package ua.se.sample.service;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import ua.se.sample.models.request.MovieFullInfoRequest;
 import ua.se.sample.models.request.MovieRequest;
 import ua.se.sample.models.response.MovieFullInfoResponse;
@@ -17,4 +19,8 @@ public interface MovieService {
 
     MovieFullInfoResponse add(MovieRequest request);
     MovieFullInfoResponse addFull(MovieFullInfoRequest request);
+
+    MovieFullInfoResponse createNewMovie(@NotNull @Valid MovieRequest movieRequest);
+
+    MovieFullInfoResponse updateMovie(@NotNull Long id, @NotNull @Valid MovieRequest movieRequest);
 }

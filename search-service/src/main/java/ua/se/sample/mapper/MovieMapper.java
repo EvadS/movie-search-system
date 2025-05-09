@@ -25,15 +25,7 @@ public interface MovieMapper {
 
     Movie toMovieEntity(MovieFullInfoRequest request);
 
-//    @Mappings({
-//            @Mapping(target = "totalPages", source = "totalPages"),
-//            @Mapping(target = "totalElements", source = "totalElements"),
-//            @Mapping(target = "pageSize", source = "size"),
-//            @Mapping(target = "pageElements", source = "numberOfElements"),
-//            //@Mapping(target = "items", source = "content"),
-//    })
-//    MoviePagedResponse toPagedMoviePagedResponse(List<MovieResponseItem> list,
-//                                                                          Page<Movie> all);
-
     MovieResponseItem toMovieResponseItem(Movie entity);
+
+    Movie toMovie (MovieRequest movieRequest);
 }

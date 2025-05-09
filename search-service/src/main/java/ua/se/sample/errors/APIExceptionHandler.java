@@ -111,7 +111,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AlreadyExistsException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    @ApiResponse(responseCode = "404", description = "resource not found", content = @Content)
+   // @ApiResponse(responseCode = "404", description = "resource not found", content = @Content)
 
     public ResponseEntity<?> handleAlreadyExistsException(AlreadyExistsException e, WebRequest request) {
         return buildErrorResponse(e, "Resource already exists", e.getMessage(), HttpStatus.CONFLICT, request);

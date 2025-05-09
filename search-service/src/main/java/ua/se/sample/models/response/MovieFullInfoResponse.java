@@ -1,5 +1,6 @@
 package ua.se.sample.models.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class MovieFullInfoResponse {
 
+    @Schema(description = "Unique identifier.",
+            example = "1", required = true)
     private Long id;
 
     private String title;

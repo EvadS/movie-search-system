@@ -39,7 +39,7 @@ public class CountryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "successful operation",
-                    content = @Content(mediaType = "application/json",array = @ArraySchema(
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(
                             schema = @Schema(implementation = CountryResponseItem.class))))
     })
     public List<CountryResponseItem> getCountries() {
@@ -59,7 +59,7 @@ public class CountryController {
                             schema = @Schema(implementation = ErrorDetail.class))),
             @ApiResponse(responseCode = "404", description = "Country not found",
                     content = @Content(mediaType = "application/json",
-            schema = @Schema(implementation = ErrorDetail.class)))
+                            schema = @Schema(implementation = ErrorDetail.class)))
     })
     public CountryResponseItem getGetCountryByName(
             @Parameter(name = "The name of country to be retrieved",
@@ -94,11 +94,11 @@ public class CountryController {
             @ApiResponse(
                     responseCode = "500",
                     description = "Server error",
-                    content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDetail.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetail.class)))
     })
     public CountryResponse addCountry(
             @Parameter(name = "Model to create new item",
-                    description = "The model that needs to crwate new item",
+                    description = "The model that needs to create new item",
                     schema = @Schema(implementation = CountryRequest.class), required = true)
             @NotNull @Valid @RequestBody CountryRequest catalogueItem) {
         return countryService.createCountry(catalogueItem);
@@ -106,17 +106,16 @@ public class CountryController {
 
     @PutMapping(ControllersApiPaths.UPDATE)
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    @Operation(summary = "Update an existing pet",
-            description = "Update an existing pet by Id", tags = {"country"})
+    @Operation(summary = "Update an existing country",
+            description = "Update an existing country by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CountryResponse.class))}
-            ),
+                            schema = @Schema(implementation = CountryResponse.class))}),
             @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
             @ApiResponse(responseCode = "404", description = "Resource not found",
                     content = @Content(mediaType = "application/json",
-            schema = @Schema(implementation = ErrorDetail.class))),
+                            schema = @Schema(implementation = ErrorDetail.class))),
             @ApiResponse(responseCode = "405",
                     description = "Invalid input",
                     content = @Content(mediaType = "application/json",
@@ -131,10 +130,11 @@ public class CountryController {
                             schema = @Schema(implementation = ErrorDetail.class)))
     })
     public CountryResponse updateCountry(
-            @Parameter(name="The unique identifier", description = "unique identifier to be retrieved",
-                    schema = @Schema(implementation = Long.class), required = true)
-            @PathVariable(value = "id") Long id,
-            @Parameter(description = "Model to update exist item",
+            @Parameter(name = "id", description = "Id of the item to be update. Cannot be empty.",
+                    required = true)
+            @PathVariable Long id,
+
+            @Parameter(description = "Model to update exist item. Cannot null or empty",
                     schema = @Schema(implementation = CountryRequest.class), required = true)
             @Valid @RequestBody CountryRequest country) {
         return countryService.updateCountry(id, country);
@@ -153,13 +153,13 @@ public class CountryController {
             // stub. will use when auth added
             // @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true))),
 
-        @ApiResponse(responseCode = "404",
+            @ApiResponse(responseCode = "404",
                     description = "Resource not found",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetail.class)))
     })
     public void removeCountry(
-            @Parameter(name="The unique identifier", description = "unique identifier to be retrieved",
+            @Parameter(name = "The unique identifier", description = "unique identifier to be retrieved",
                     schema = @Schema(implementation = Long.class), required = true)
             @NotNull @PathVariable(value = "id") Long id) {
         countryService.deleteCountry(id);
