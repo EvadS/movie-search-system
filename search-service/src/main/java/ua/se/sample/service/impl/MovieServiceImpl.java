@@ -21,6 +21,7 @@ import ua.se.sample.repository.*;
 import ua.se.sample.service.MovieService;
 
 import java.util.List;
+
 import ua.se.sample.config.AppConst;
 
 @Service
@@ -36,7 +37,9 @@ public class MovieServiceImpl implements MovieService {
 
     private final LanguageRepository languageRepository;
     private final MovieLanguageRepository movieLanguageRepository;
-private final  LanguageRoleRepository languageRoleRepository;
+    private final LanguageRoleRepository languageRoleRepository;
+
+    private final MovieKeywordRepository movieKeywordRepository;
 
     private final MovieMapper mapper;
 
@@ -85,9 +88,9 @@ private final  LanguageRoleRepository languageRoleRepository;
         Movie movie = mapper.toMovieEntity(movieRequest);
         movie = movieRepository.save(movie);
 
-        if(movieRequest.getCountryId() !=null){
+        if (movieRequest.getCountryId() != null) {
             //countryId
-            CountryEntity countryEntity =countryRepository.findById(movieRequest.getCountryId())
+            CountryEntity countryEntity = countryRepository.findById(movieRequest.getCountryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Country", "id", movieRequest.getCountryId()));
 
             ProductionCountryPK productionCountryPK = new ProductionCountryPK();
@@ -100,11 +103,11 @@ private final  LanguageRoleRepository languageRoleRepository;
         }
 
         //languageId
-        if(movieRequest.getLanguageId()!=null){
+        if (movieRequest.getLanguageId() != null) {
             LanguageEntity languageEntity = languageRepository.findById(movieRequest.getLanguageId())
                     .orElseThrow(() -> new ResourceNotFoundException("Language", "id", movieRequest.getLanguageId()));
 
-            LanguageRole  languageRole = languageRoleRepository.findById(AppConst.DEFAULT_LANGUAGE_ROLE_ID)
+            LanguageRole languageRole = languageRoleRepository.findById(AppConst.DEFAULT_LANGUAGE_ROLE_ID)
                     .orElseThrow(() -> new ResourceNotFoundException(" movie Language", "id", AppConst.DEFAULT_LANGUAGE_ROLE_ID));
 
             // build relation
@@ -119,6 +122,7 @@ private final  LanguageRoleRepository languageRoleRepository;
             movieLanguageRepository.save(movieLanguage);
         }
 
+        // movieKeywordRepository
         return mapper.toMovieFullInfoResponse(movie);
     }
 
@@ -165,8 +169,8 @@ private final  LanguageRoleRepository languageRoleRepository;
         if (movieRequest.getVoteCount() != null)
             movieEntity.setVoteCount(movieRequest.getVoteCount());
 
-        if(movieRequest.getCountryId() !=null){
-            CountryEntity countryEntity =countryRepository.findById(movieRequest.getCountryId())
+        if (movieRequest.getCountryId() != null) {
+            CountryEntity countryEntity = countryRepository.findById(movieRequest.getCountryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Country", "id", movieRequest.getCountryId()));
 
             ProductionCountryPK productionCountryPK = new ProductionCountryPK();
@@ -178,7 +182,7 @@ private final  LanguageRoleRepository languageRoleRepository;
             productionCountryRepository.save(productionCountry);
         }
 
-        if(movieRequest.getGenreId()!=null){
+        if (movieRequest.getGenreId() != null) {
             GenreEntity genreEntity = genreRepository.findById(movieRequest.getGenreId())
                     .orElseThrow(() -> new ResourceNotFoundException("Genre", "id", movieRequest.getGenreId()));
 
@@ -194,11 +198,11 @@ private final  LanguageRoleRepository languageRoleRepository;
         }
 
         //languageId
-        if(movieRequest.getLanguageId()!=null){
+        if (movieRequest.getLanguageId() != null) {
             LanguageEntity languageEntity = languageRepository.findById(movieRequest.getLanguageId())
                     .orElseThrow(() -> new ResourceNotFoundException("Language", "id", movieRequest.getLanguageId()));
 
-            LanguageRole  languageRole = languageRoleRepository.findById(AppConst.DEFAULT_LANGUAGE_ROLE_ID)
+            LanguageRole languageRole = languageRoleRepository.findById(AppConst.DEFAULT_LANGUAGE_ROLE_ID)
                     .orElseThrow(() -> new ResourceNotFoundException(" movie Language", "id", AppConst.DEFAULT_LANGUAGE_ROLE_ID));
 
             // build relation

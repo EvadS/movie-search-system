@@ -1,12 +1,10 @@
-package ua.se.sample.generated;
+package ua.se.sample.dao;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ua.se.sample.dao.KeywordEntity;
-import ua.se.sample.dao.Movie;
 
 @Getter
 @Setter
@@ -27,5 +25,4 @@ public class MovieKeyword {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "keyword_id", nullable = false)
     private KeywordEntity keyword;
-
 }
