@@ -1,7 +1,9 @@
 package ua.se.sample.generated;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.se.sample.dao.KeywordEntity;
 import ua.se.sample.dao.Movie;
@@ -9,6 +11,8 @@ import ua.se.sample.dao.Movie;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "movie_keywords")
 public class MovieKeyword {
     @EmbeddedId

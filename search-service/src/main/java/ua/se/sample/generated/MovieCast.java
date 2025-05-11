@@ -11,25 +11,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "movie_cast")
 public class MovieCast {
-//    @Id
-//    @NotNull
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "movie_id", nullable = false)
-//    private Movie movie;
-//
-//    @Id
-//    @NotNull
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "person_id", nullable = false)
-//    private Person person;
-//
-//
-//    @Id
-//    @NotNull
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "gender_id", nullable = false)
-//    private Gender gender;
-
     @EmbeddedId
     private MovieCastPK movieCastPK;
 
@@ -40,5 +21,4 @@ public class MovieCast {
 
     @Column(name = "cast_order")
     private Integer castOrder;
-
 }

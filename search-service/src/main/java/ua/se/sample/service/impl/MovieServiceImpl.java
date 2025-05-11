@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.se.sample.dao.*;
 import ua.se.sample.errors.exceptions.ResourceNotFoundException;
-import ua.se.sample.generated.LanguageRole;
+import ua.se.sample.dao.LanguageRole;
 import ua.se.sample.generated.MovieGenre;
 import ua.se.sample.generated.MovieGenrePK;
 import ua.se.sample.mapper.MovieMapper;
