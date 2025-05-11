@@ -7,25 +7,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.se.sample.dao.CountryEntity;
-import ua.se.sample.dao.Movie;
-import ua.se.sample.dao.ProductionCountry;
-import ua.se.sample.dao.ProductionCountryPK;
+import ua.se.sample.dao.*;
 import ua.se.sample.errors.exceptions.ResourceNotFoundException;
+import ua.se.sample.generated.LanguageRole;
+import ua.se.sample.generated.MovieGenre;
+import ua.se.sample.generated.MovieGenrePK;
 import ua.se.sample.mapper.MovieMapper;
-import ua.se.sample.models.request.MovieFullInfoRequest;
 import ua.se.sample.models.request.MovieRequest;
-import ua.se.sample.models.response.CountryResponse;
 import ua.se.sample.models.response.MovieFullInfoResponse;
 import ua.se.sample.models.response.MoviePagedResponse;
 import ua.se.sample.models.response.MovieResponseItem;
-import ua.se.sample.repository.CountryRepository;
-import ua.se.sample.repository.MovieRepository;
-import ua.se.sample.repository.ProductionCountryRepository;
+import ua.se.sample.repository.*;
 import ua.se.sample.service.MovieService;
 
 import java.util.List;
-import java.util.Optional;
+import ua.se.sample.config.AppConst;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +30,14 @@ public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final CountryRepository countryRepository;
     private final ProductionCountryRepository productionCountryRepository;
+    private final GenreRepository genreRepository;
+
+    private final MovieGenreRepository movieGenreRepository;
+
+    private final LanguageRepository languageRepository;
+    private final MovieLanguageRepository movieLanguageRepository;
+private final  LanguageRoleRepository languageRoleRepository;
+
     private final MovieMapper mapper;
 
     private static MoviePagedResponse toPagedMoviePagedResponse(List<MovieResponseItem> list, Page<Movie> all) {
@@ -95,6 +99,26 @@ public class MovieServiceImpl implements MovieService {
             productionCountryRepository.save(productionCountry);
         }
 
+        //languageId
+        if(movieRequest.getLanguageId()!=null){
+            LanguageEntity languageEntity = languageRepository.findById(movieRequest.getLanguageId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Language", "id", movieRequest.getLanguageId()));
+
+            LanguageRole  languageRole = languageRoleRepository.findById(AppConst.DEFAULT_LANGUAGE_ROLE_ID)
+                    .orElseThrow(() -> new ResourceNotFoundException(" movie Language", "id", AppConst.DEFAULT_LANGUAGE_ROLE_ID));
+
+            // build relation
+            MovieLanguagePK movieLanguagePK = new MovieLanguagePK();
+
+            movieLanguagePK.setMovie(movie);
+            movieLanguagePK.setLanguage(languageEntity);
+            movieLanguagePK.setLanguageRole(languageRole);
+
+            MovieLanguage movieLanguage = new MovieLanguage();
+            movieLanguage.setMovieLanguagePK(movieLanguagePK);
+            movieLanguageRepository.save(movieLanguage);
+        }
+
         return mapper.toMovieFullInfoResponse(movie);
     }
 
@@ -142,7 +166,6 @@ public class MovieServiceImpl implements MovieService {
             movieEntity.setVoteCount(movieRequest.getVoteCount());
 
         if(movieRequest.getCountryId() !=null){
-            //countryId
             CountryEntity countryEntity =countryRepository.findById(movieRequest.getCountryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Country", "id", movieRequest.getCountryId()));
 
@@ -155,6 +178,40 @@ public class MovieServiceImpl implements MovieService {
             productionCountryRepository.save(productionCountry);
         }
 
+        if(movieRequest.getGenreId()!=null){
+            GenreEntity genreEntity = genreRepository.findById(movieRequest.getGenreId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Genre", "id", movieRequest.getGenreId()));
+
+            // build relation
+            MovieGenrePK movieGenrePK = new MovieGenrePK();
+            movieGenrePK.setMovie(movieEntity);
+            movieGenrePK.setGenre(genreEntity);
+
+            MovieGenre movieGenre = new MovieGenre();
+            movieGenre.setOrderPK(movieGenrePK);
+
+            movieGenreRepository.save(movieGenre);
+        }
+
+        //languageId
+        if(movieRequest.getLanguageId()!=null){
+            LanguageEntity languageEntity = languageRepository.findById(movieRequest.getLanguageId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Language", "id", movieRequest.getLanguageId()));
+
+            LanguageRole  languageRole = languageRoleRepository.findById(AppConst.DEFAULT_LANGUAGE_ROLE_ID)
+                    .orElseThrow(() -> new ResourceNotFoundException(" movie Language", "id", AppConst.DEFAULT_LANGUAGE_ROLE_ID));
+
+            // build relation
+            MovieLanguagePK movieLanguagePK = new MovieLanguagePK();
+
+            movieLanguagePK.setMovie(movieEntity);
+            movieLanguagePK.setLanguage(languageEntity);
+            movieLanguagePK.setLanguageRole(languageRole);
+
+            MovieLanguage movieLanguage = new MovieLanguage();
+            movieLanguage.setMovieLanguagePK(movieLanguagePK);
+            movieLanguageRepository.save(movieLanguage);
+        }
 
         movieEntity = movieRepository.save(movieEntity);
         return mapper.toMovieFullInfoResponse(movieEntity);

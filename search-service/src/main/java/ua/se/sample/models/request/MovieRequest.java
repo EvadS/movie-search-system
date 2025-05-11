@@ -36,4 +36,8 @@ public class MovieRequest {
     private Integer voteCount;
 
     private Long countryId;
+
+    private Long genreId;
+    private Long keywordId;
+    private Long languageId;
 }

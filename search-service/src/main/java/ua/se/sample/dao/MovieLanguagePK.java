@@ -1,11 +1,18 @@
-package ua.se.sample.generated;
+package ua.se.sample.dao;
 
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import ua.se.sample.dao.LanguageEntity;
-import ua.se.sample.dao.Movie;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ua.se.sample.generated.LanguageRole;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class MovieLanguagePK {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id")

@@ -16,11 +16,11 @@ public class MovieKeywordId implements java.io.Serializable {
     private static final long serialVersionUID = -8551063719868033633L;
     @NotNull
     @Column(name = "movie_id", nullable = false)
-    private Integer movieId;
+    private Long movieId;
 
     @NotNull
     @Column(name = "keyword_id", nullable = false)
-    private Integer keywordId;
+    private Long keywordId;
 
     @Override
     public boolean equals(Object o) {
