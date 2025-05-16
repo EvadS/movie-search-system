@@ -10,6 +10,8 @@ import ua.se.sample.models.request.LanguageRequest;
 import ua.se.sample.models.response.LanguageResponse;
 import ua.se.sample.service.LanguageService;
 
+import java.util.List;
+
 @Controller
 @AllArgsConstructor
 public class LanguageControllerGQL {
@@ -19,6 +21,12 @@ public class LanguageControllerGQL {
     @QueryMapping(GQLConstants.LANGUAGE_BY_ID)
     public LanguageResponse languageById(@Argument Long id) {
         return languageService.getById(id);
+    }
+
+
+    @QueryMapping
+    public Iterable<LanguageResponse> languages() {
+        return languageService.list();
     }
 
 

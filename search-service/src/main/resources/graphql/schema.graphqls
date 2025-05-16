@@ -3,6 +3,8 @@ scalar Long
 
 type Query {
     languageById(id: Long): LanguageResponse
+    languages: [LanguageResponse]
+
 }
 
 type Mutation {

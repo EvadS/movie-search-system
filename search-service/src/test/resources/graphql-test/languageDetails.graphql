@@ -1,5 +1,3 @@
-
-
 query languageDetails($id: Long) {
     languageById(id: $id) {
         id

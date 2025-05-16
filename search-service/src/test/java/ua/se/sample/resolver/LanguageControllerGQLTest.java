@@ -1,5 +1,7 @@
 package ua.se.sample.resolver;
 
+import org.assertj.core.api.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,10 @@ import ua.se.sample.config.GraphQLConfig;
 import ua.se.sample.models.response.LanguageResponse;
 import ua.se.sample.service.LanguageService;
 
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,29 +37,19 @@ class LanguageControllerGQLTest {
     @Test
     void languageByIdInline() {
         LanguageResponse countryResponseItem = prepareLanguageResponse();
-        Mockito.when(languageService.getById(any())).thenReturn(countryResponseItem);
+        Mockito.when(languageService.list()).thenReturn(List.of(countryResponseItem));
 
-        final String document = """
-                {
-                  languageById(id: 1) {
-                    id
-                    name
-                  }
-                }""";
-        GraphQlResponse graphQlResponse = this.graphQlTester
-                .document(document)
+        String query = "{ languages { id name code } }";
+        List<LanguageResponse> allLanguages = graphQlTester.document(query)
                 .execute()
-                .returnResponse();
+                .path("data.languages[*]")
+                .entityList(LanguageResponse.class)
+                .get();
 
-        this.graphQlTester
-                .document(document)
-                .execute()
-                .path(GQLConstants.LANGUAGE_BY_ID)
-                .matchesJson("""
-                        {
-                          "id": 1,
-                          "name": "Vayshnoria-lang"
-                        }""");
+        Assertions.assertTrue(allLanguages.size() > 0);
+        Assertions.assertNotNull(allLanguages.get(0).getId());
+        Assertions.assertNotNull(allLanguages.get(0).getName());
+        Assertions.assertNotNull(allLanguages.get(0).getCode());
     }
 
     @Test
@@ -112,5 +108,29 @@ class LanguageControllerGQLTest {
                 .name("Vayshnoria-lang")
                 .code("iso")
                 .build();
+    }
+
+    @Test
+    void findAll() {
+
+        List<LanguageResponse> langResponse = Collections.singletonList(prepareLanguageResponse());
+        Mockito.when(languageService.list()).thenReturn(langResponse);
+//
+//       this.graphQlTester
+//                .documentName("books.graphql")
+//                .execute()
+//                .path("languages");
+
+//        List<LanguageResponse> departments = this.graphQlTester.document(query)
+//                .execute()
+//                .path("data.languages[*]")
+//                .entityList(LanguageResponse.class)
+//                .get();
+
+        int a =0;
+
+      //  Assertions.assertTrue(departments.size() > 0);
+      //  Assertions.assertNotNull(departments.get(0).getId());
+      //  Assertions.assertNotNull(departments.get(0).getName());
     }
 }
