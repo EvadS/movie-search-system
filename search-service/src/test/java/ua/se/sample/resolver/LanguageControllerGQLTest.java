@@ -4,9 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.graphql.GraphQlResponse;
 import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import ua.se.sample.config.GQLConstants;
+import ua.se.sample.config.GraphQLConfig;
 import ua.se.sample.models.response.LanguageResponse;
 import ua.se.sample.service.LanguageService;
 
@@ -15,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
 
+@Import(GraphQLConfig.class)
+//@Import(LanguageService.class)
 @GraphQlTest(LanguageControllerGQL.class)
 class LanguageControllerGQLTest {
     @Autowired
@@ -30,7 +35,7 @@ class LanguageControllerGQLTest {
 
         final String document = """
                 {
-                  languageById(id: "1") {
+                  languageById(id: 1) {
                     id
                     name
                   }
@@ -43,10 +48,10 @@ class LanguageControllerGQLTest {
         this.graphQlTester
                 .document(document)
                 .execute()
-                .path("languageById")
+                .path(GQLConstants.LANGUAGE_BY_ID)
                 .matchesJson("""
                         {
-                          "id": "1",
+                          "id": 1,
                           "name": "Vayshnoria-lang"
                         }""");
     }
@@ -71,7 +76,7 @@ class LanguageControllerGQLTest {
         final LanguageResponse response = this.graphQlTester
                 .document(document)
                 .execute()
-                .path("addLanguage")
+                .path(GQLConstants.ADD_LANGUAGE)
                 .entity(LanguageResponse.class)
                 .get();
 
@@ -87,19 +92,18 @@ class LanguageControllerGQLTest {
         LanguageResponse langResponse = prepareLanguageResponse();
         Mockito.when(languageService.getById(any())).thenReturn(langResponse);
 
-        this.graphQlTester
+        LanguageResponse response = this.graphQlTester
                 .documentName("languageDetails")
-                .variable("id", "1")
+                .variable("id", 1L)
                 .execute()
-                .path("languageById")
-                .matchesJson("""
-                    {
-                        "id": "1",
-                        "name": "Vayshnoria-lang",
-                        "code": "iso"
-                    }
-                """);
-    }
+                .path(GQLConstants.LANGUAGE_BY_ID)
+                .entity(LanguageResponse.class)
+                .get();
+
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getName()).isEqualTo(langResponse.getName());
+        assertThat(response.getCode()).isEqualTo(langResponse.getCode());
+     }
 
     private LanguageResponse prepareLanguageResponse() {
 

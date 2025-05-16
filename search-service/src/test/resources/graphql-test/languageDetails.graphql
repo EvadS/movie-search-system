@@ -1,7 +1,10 @@
-query languageDetails($id: String) {
+
+
+query languageDetails($id: Long) {
     languageById(id: $id) {
         id
         name
         code
     }
 }
+

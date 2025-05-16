@@ -5,6 +5,7 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import ua.se.sample.config.GQLConstants;
 import ua.se.sample.models.request.LanguageRequest;
 import ua.se.sample.models.response.LanguageResponse;
 import ua.se.sample.service.LanguageService;
@@ -15,14 +16,13 @@ public class LanguageControllerGQL {
 
     private final LanguageService languageService;
 
-    @QueryMapping("languageById")
-    public LanguageResponse languageById(@Argument String id) {
-        Long value = Long.valueOf(id);
-        return languageService.getById(value);
+    @QueryMapping(GQLConstants.LANGUAGE_BY_ID)
+    public LanguageResponse languageById(@Argument Long id) {
+        return languageService.getById(id);
     }
 
 
-    @MutationMapping("addLanguage")
+    @MutationMapping(GQLConstants.ADD_LANGUAGE)
     public LanguageResponse addLanguage(
             @Argument String iso,
             @Argument String name) {

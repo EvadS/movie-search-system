@@ -1,5 +1,8 @@
+
+scalar Long
+
 type Query {
-    languageById(id: String): LanguageResponse
+    languageById(id: Long): LanguageResponse
 }
 
 type Mutation {
@@ -11,3 +14,7 @@ type LanguageResponse{
     name: String
     code: String
 }
+
+
+
+
