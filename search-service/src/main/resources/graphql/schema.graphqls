@@ -4,11 +4,11 @@ scalar Long
 type Query {
     languageById(id: Long): LanguageResponse
     languages: [LanguageResponse]
-
 }
 
 type Mutation {
      addLanguage(code: String!, name: String!): LanguageResponse
+     updateUser(id: Long!, name: String, code: String): LanguageResponse
 }
 
 type LanguageResponse{

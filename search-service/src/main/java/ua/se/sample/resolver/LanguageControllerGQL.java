@@ -37,4 +37,10 @@ public class LanguageControllerGQL {
         LanguageRequest request = new LanguageRequest(iso, name);
         return languageService.create(request);
     }
+
+    @MutationMapping
+    public LanguageResponse updateUser(@Argument Long id, @Argument String name, @Argument String code) {
+        LanguageRequest request = new LanguageRequest(name, code);
+        return languageService.update(id, request);
+    }
 }
