@@ -1,0 +1,13 @@
+type Query {
+    languageById(id: String): LanguageResponse
+}
+
+type Mutation {
+     addLanguage(code: String!, name: String!): LanguageResponse
+}
+
+type LanguageResponse{
+    id: ID
+    name: String
+    code: String
+}

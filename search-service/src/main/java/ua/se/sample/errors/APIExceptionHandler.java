@@ -46,7 +46,9 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-        List<ApiValidationError> validationErrorList = fieldErrors.stream().map(
+
+        List<ApiValidationError> validationErrorList = fieldErrors
+                .stream().map(
                 i ->
                         ApiValidationError.builder()
                                 .object(i.getObjectName())
@@ -61,6 +63,20 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
                 request);
     }
 
+
+//
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public Map<String, String> handleValidationExceptions(
+//            MethodArgumentNotValidException ex) {
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach((error) -> {
+//            String fieldName = ((FieldError) error).getField();
+//            String errorMessage = error.getDefaultMessage();
+//            errors.put(fieldName, errorMessage);
+//        });
+//        return errors;
+//    }
 
     @ExceptionHandler(DataBaseConstraintException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)

@@ -1,0 +1,7 @@
+query languageDetails($id: String) {
+    languageById(id: $id) {
+        id
+        name
+        code
+    }
+}

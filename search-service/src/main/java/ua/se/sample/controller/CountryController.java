@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.se.sample.config.ControllersApiPaths;
@@ -24,6 +25,7 @@ import ua.se.sample.service.CountryService;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH)
 @AllArgsConstructor
@@ -100,8 +102,8 @@ public class CountryController {
             @Parameter(name = "Model to create new item",
                     description = "The model that needs to create new item",
                     schema = @Schema(implementation = CountryRequest.class), required = true)
-            @NotNull @Valid @RequestBody CountryRequest catalogueItem) {
-        return countryService.createCountry(catalogueItem);
+            @Valid @NotNull @RequestBody CountryRequest countryRequest) {
+        return countryService.createCountry(countryRequest);
     }
 
     @PutMapping(ControllersApiPaths.UPDATE)

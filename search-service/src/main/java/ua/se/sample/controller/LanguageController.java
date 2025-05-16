@@ -3,6 +3,9 @@ package ua.se.sample.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import ua.se.sample.service.KeywordService;
 import ua.se.sample.service.LanguageService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.LANGUAGE_PATH)
@@ -48,7 +52,7 @@ public class LanguageController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public LanguageResponse update(
             @PathVariable(value = "id") Long id,
-            @Valid @RequestBody LanguageRequest languageRequest )  {
+            @Valid @RequestBody LanguageRequest languageRequest) {
 
         return languageService.update(id, languageRequest);
     }
@@ -60,3 +64,4 @@ public class LanguageController {
         languageService.delete(id);
     }
 }
+

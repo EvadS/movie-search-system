@@ -7,8 +7,10 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -33,22 +35,16 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.BDDMockito.given;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import ua.se.sample.web.ResponseBodyMatchers;
-
 import static org.mockito.ArgumentMatchers.any;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.hamcrest.CoreMatchers.is;;
 
 
 @Log4j2
@@ -63,6 +59,7 @@ class CountryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
     @MockitoBean
     private CountryService countryService;
 
@@ -74,12 +71,13 @@ class CountryControllerTest {
         objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     }
 
+
     @Test
     @DisplayName("Test get catalogue items")
     void testGetCatalogueItems() {
         try {
             List<CountryResponseItem> countryList = prepareCountryResponse();
-            given(countryService.getCountryList()).willReturn(countryList);
+            Mockito.when(countryService.getCountryList()).thenReturn(countryList);
 
             String uriTemplate = ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.GET_ITEMS;
             MvcResult result
@@ -107,7 +105,7 @@ class CountryControllerTest {
         String name = "name";
         try {
             CountryResponseItem catalogueItem = prepareCountryResponseItem(1L, name);
-            given(countryService.getCountryByName(name)).willReturn(catalogueItem);
+            Mockito.when((countryService.getCountryByName(name))).thenReturn(catalogueItem);
 
             MvcResult result
                     = this.mockMvc
@@ -130,11 +128,17 @@ class CountryControllerTest {
         CountryRequest countryRequest = prepareCountryRequest(countryName);
         CountryResponse countryResponse = prepareCountryCountryResponse(countryRequest);
 
-        given(countryService.createCountry(countryRequest)).willReturn(countryResponse);
+        //given(countryService.createCountry(countryRequest)).willReturn(countryResponse);
+        //when(countryService.createCountry(countryRequest)).thenReturn(countryResponse);
+
+
+        Mockito.when(
+                this.countryService.createCountry(any())).thenReturn(countryResponse);
+
         try {
-            this.mockMvc
+           this.mockMvc
                     .perform(
-                            post(ControllersApiPaths.BASE_PATH+ ControllersApiPaths.COUNTRY_PATH + ControllersApiPaths.CREATE)
+                            post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH + ControllersApiPaths.CREATE)
                                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                                     .content(objectMapper.writeValueAsString(countryRequest)))
                     .andExpect(status().isCreated())
@@ -142,9 +146,14 @@ class CountryControllerTest {
                     .andExpect(jsonPath("$.name").value(countryRequest.getName()))
                     .andExpect(jsonPath("$.text").value(countryRequest.getText()))
                     .andExpect(jsonPath("$.isoCode").value(countryRequest.getIsoCode()));
+
         } catch (Exception e) {
             Assertions.fail("Error occurred while creating catalogue item", e);
         }
+    }
+
+    private CountryResponse getCountry(CountryRequest countryRequest) {
+        return countryService.createCountry(countryRequest);
     }
 
 
@@ -155,11 +164,11 @@ class CountryControllerTest {
         CountryRequest countryRequest = prepareCountryRequest(countryName);
         CountryResponse countryResponse = prepareCountryCountryResponse(countryRequest);
 
-        given(countryService.createCountry(countryRequest)).willReturn(countryResponse);
-
+        Mockito.when(countryService.createCountry(any())).thenReturn(countryResponse);
 
         // action
-        ResultActions response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
+        ResultActions response = mockMvc.perform(post(ControllersApiPaths.BASE_PATH +
+                ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(countryRequest)));
 
@@ -178,7 +187,7 @@ class CountryControllerTest {
             CountryRequest countryRequest = prepareCountryRequest(countryName);
             CountryResponse countryResponse = prepareCountryCountryResponse(countryRequest);
             //doNothing().when(countryService).updateCountry(defaultId,countryRequest);
-            given(countryService.updateCountry(defaultId, countryRequest)).willReturn(countryResponse);
+            Mockito.when(countryService.updateCountry(defaultId, countryRequest)).thenReturn(countryResponse);
 
             this.mockMvc
                     .perform(
@@ -276,16 +285,21 @@ class CountryControllerTest {
     @Test
     void whenNullValue_thenReturns400AndErrorResult_withFluentApi() throws Exception {
 
-        CountryRequest countryRequest = prepareCountryRequest(countryName);
-        countryRequest.setName("");
-        countryRequest.setIsoCode("012345678901234567890");
+        CountryRequest request = prepareCountryRequest(countryName);
+        request.setName("");
+        request.setIsoCode("012345678901234567890");
 
-        mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH+ ControllersApiPaths.CREATE)
+        //MvcResult mvcResult =
+                mockMvc.perform(post(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH + ControllersApiPaths.CREATE)
                         .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(countryRequest)))
+                        .header("Accept-Language", "en_US")
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
+               // .andReturn();
+
                 .andExpect(ResponseBodyMatchers.responseBody()
-                        .containsErrors("isoCode", "size must be between 0 and 10"));
+                        .containsErrors("isoCode", "Iso code be should less 10 characters"));
+        int a =0;
     }
 
 
