@@ -30,19 +30,17 @@ public class CountryEntity {
     @Column(name = "ID", unique = true, nullable = false)
     private Long id;
 
-    @NotBlank
-    @Size(max = 1000)
-    private String text;
-
     @NonNull
-    @NotEmpty(message = "county iso code cannot be null or empty")
     @Column(name = "country_iso_code", unique = true, nullable = false, length = 10)
     public String countryIsoCode;
 
     @NonNull
-    @NotEmpty(message = "country cannot be null or empty")
     @Column(name = "country_name", unique = true, nullable = false, length = 100)
     public String countryName;
+
+
+    @Column(name = "text", length = 1000)
+    public String text;
 
     /*
      @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

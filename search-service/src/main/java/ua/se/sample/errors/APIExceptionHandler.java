@@ -1,10 +1,6 @@
 package ua.se.sample.errors;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ua.se.sample.errors.apierror.ApiValidationError;
 import ua.se.sample.errors.apierror.ErrorDetail;
@@ -37,8 +34,6 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Value("${books.trace:false}")
     private final boolean printStackTrace = false;
-
-
     /***************************************************************
      ***  VALIDATION ERRORS block
      ***************************************************************/
@@ -63,20 +58,12 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
                 request);
     }
 
-
-//
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public Map<String, String> handleValidationExceptions(
-//            MethodArgumentNotValidException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//        return errors;
-//    }
+    // @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Object> handleSizeException(MaxUploadSizeExceededException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        return buildErrorResponse(ex, "Upload too large",
+                "Constraint validation",
+                HttpStatus.BAD_REQUEST,request);
+    }
 
     @ExceptionHandler(DataBaseConstraintException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -87,6 +74,8 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.CONFLICT,  request);
     }
 
+
+//    InvalidDataAccessResourceUsageException
     /****************************************************************
      *      Block 415  HttpMediaTypeNotSupportedException
      ****************************************************************/
@@ -128,7 +117,6 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AlreadyExistsException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
    // @ApiResponse(responseCode = "404", description = "resource not found", content = @Content)
-
     public ResponseEntity<?> handleAlreadyExistsException(AlreadyExistsException e, WebRequest request) {
         return buildErrorResponse(e, "Resource already exists", e.getMessage(), HttpStatus.CONFLICT, request);
     }

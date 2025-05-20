@@ -11,7 +11,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,8 +25,14 @@ import ua.se.sample.models.response.CountryResponse;
 import ua.se.sample.models.response.CountryResponseItem;
 import ua.se.sample.service.CountryService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+@Log4j2
 @Validated
 @RestController
 @RequestMapping(ControllersApiPaths.BASE_PATH + ControllersApiPaths.COUNTRY_PATH)
@@ -180,9 +188,30 @@ public class CountryController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDetail.class)))
     })
-    public void uploadCountryImage(
-            @PathVariable(value = "id") String skuNumber,
+    public ResponseEntity<String> uploadCountryImage(
+            @Parameter(name = "The unique identifier", description = "unique identifier to be retrieved",
+                    schema = @Schema(implementation = Long.class), required = true)
+            @PathVariable(value = "id") String id,
             @RequestParam("file") MultipartFile file)
-            throws ResourceNotFoundException {
+            throws ResourceNotFoundException, IOException {
+        String name = file.getOriginalFilename();
+        long size = file.getSize();
+
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("File is empty");
+        }
+
+        if (!"image/jpeg".equals(file.getContentType())) {
+            return ResponseEntity.badRequest().body("Only PDF files are allowed");
+        }
+
+        String uploadDir = "/uploads";
+        Path path = Paths.get(uploadDir, file.getOriginalFilename());
+
+        Files.createDirectories(path.getParent());
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        log.info("stored file to:{}",path.getParent());
+
+         return ResponseEntity.ok("Got file " + name + " (" + size + " bytes)");
     }
 }
